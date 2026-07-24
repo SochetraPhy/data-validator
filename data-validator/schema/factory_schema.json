@@ -1,0 +1,130 @@
+{
+  "$comment": "Frictionless Table Schema (https://specs.frictionlessdata.io/table-schema/) for the Cambodia factory registry. Cross-field / business-logic rules that a schema can't express (province validity, geo bounding box, date consistency, OS ID shape, employee-count outliers, Khmer script) live in gatekeeper/checks.py instead -- see README.md for which layer owns what.",
+  "fields": [
+    {
+      "name": "Factory Name (EN)",
+      "type": "string",
+      "constraints": { "required": true, "minLength": 1 }
+    },
+    {
+      "name": "Factory Name (KM)",
+      "type": "string",
+      "constraints": { "required": true, "minLength": 1 },
+      "description": "Should contain Khmer script -- checked by the khmer-name custom check, not enforced here."
+    },
+    {
+      "name": "Google Maps",
+      "type": "string",
+      "constraints": {
+        "pattern": "^https?://(www\\.)?(google\\.[a-z.]+/maps|maps\\.app\\.goo\\.gl)(/.*)?$"
+      }
+    },
+    {
+      "name": "No",
+      "type": "integer",
+      "constraints": { "required": true, "unique": true, "minimum": 1 }
+    },
+    {
+      "name": "Factory ID",
+      "type": "string",
+      "constraints": { "required": true, "unique": true, "minLength": 1 }
+    },
+    {
+      "name": "Open Supply ID",
+      "type": "string",
+      "constraints": { "unique": true },
+      "description": "Structural shape (2-letter country + 4-digit year + 3-digit day-of-year + 6 chars = 15 total) is checked as an advisory warning by the os-id-format custom check."
+    },
+    { "name": "Do Biz As", "type": "string" },
+    {
+      "name": "ID in MOC",
+      "type": "string",
+      "constraints": { "unique": true },
+      "description": "No fixed pattern enforced yet -- MOC registration numbers didn't have a confidently-known format at authoring time. Add a `pattern` constraint here once you've confirmed one against real MOC data."
+    },
+    { "name": "Address (in English from MOC)", "type": "string" },
+    {
+      "name": "Province",
+      "type": "string",
+      "constraints": { "required": true, "minLength": 1 },
+      "description": "Validated against Cambodia's 25 provinces (with alias suggestions for common variant spellings) by the province custom check, rather than a hard schema enum -- see gatekeeper/rules.py:PROVINCE_ALIASES."
+    },
+    {
+      "name": "District",
+      "type": "string",
+      "constraints": { "required": true, "minLength": 1 },
+      "description": "Not yet cross-checked against Province (a real Province->District gazetteer is needed for that -- see README 'Extending this tool')."
+    },
+    { "name": "Commune", "type": "string" },
+    { "name": "Village", "type": "string" },
+    {
+      "name": "Region",
+      "type": "string",
+      "description": "Free text by default (e.g. Plains / Tonle Sap / Coastal / Plateau-Mountain informal groupings). Turn into an enum once you've confirmed the exact category labels your source uses."
+    },
+    { "name": "Related Investment", "type": "string" },
+    { "name": "Owner Name", "type": "string" },
+    {
+      "name": "Owner Phone",
+      "type": "string",
+      "constraints": {
+        "pattern": "^(0\\d{8,9}|\\+855\\d{8,9})$"
+      }
+    },
+    {
+      "name": "Contact Number",
+      "type": "string",
+      "constraints": {
+        "pattern": "^(0\\d{8,9}|\\+855\\d{8,9})$"
+      }
+    },
+    {
+      "name": "Email",
+      "type": "string",
+      "format": "email"
+    },
+    { "name": "Parent Company", "type": "string" },
+    { "name": "Product", "type": "string" },
+    { "name": "Brand", "type": "string" },
+    {
+      "name": "Registered Date",
+      "type": "date",
+      "description": "Expected as ISO YYYY-MM-DD. If your source exports DD/MM/YYYY or similar, set e.g. \"format\": \"%d/%m/%Y\" here instead of normalizing the source file."
+    },
+    {
+      "name": "Registered Date (from MOC)",
+      "type": "date"
+    },
+    {
+      "name": "Number of Employees",
+      "type": "integer",
+      "constraints": { "minimum": 0 },
+      "description": "Hard floor at 0. Implausibly large values are flagged as an advisory warning by the employee-count custom check rather than hard-capped here, since a hard maximum would silently reject genuinely large factories."
+    },
+    { "name": "Description", "type": "string" },
+    { "name": "Source", "type": "string" },
+    { "name": "Source Link 1", "type": "string", "format": "uri" },
+    { "name": "Source Link 2", "type": "string", "format": "uri" },
+    { "name": "Source Link 3", "type": "string", "format": "uri" },
+    {
+      "name": "Lat",
+      "type": "number",
+      "constraints": { "minimum": 9.0, "maximum": 15.0 },
+      "description": "Coarse national bounding box. Both-present/both-blank pairing with Long, and the exact same bounding box, are re-checked together by the geo-pair custom check (kept in one place: gatekeeper/rules.py:CAMBODIA_BBOX)."
+    },
+    {
+      "name": "Long",
+      "type": "number",
+      "constraints": { "minimum": 102.0, "maximum": 108.0 }
+    },
+    {
+      "name": "Sector",
+      "type": "string",
+      "description": "Free text by default -- turn into an enum (e.g. Garment, Footwear, Travel Goods, Textile, Electronics) once you've confirmed the controlled vocabulary your source actually uses."
+    },
+    { "name": "Search Result (in MOC)", "type": "string" },
+    { "name": "Result (Betterwork)", "type": "string" },
+    { "name": "Data Source", "type": "string" },
+    { "name": "Reference", "type": "string" }
+  ]
+}

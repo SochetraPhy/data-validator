@@ -1,0 +1,9 @@
+{
+  "source": "sample_data/sample.json",
+  "schema": "/Applications/data-validator/schema/factory_schema.json",
+  "valid": true,
+  "strict_mode": false,
+  "error_count": 0,
+  "warning_count": 0,
+  "issues": []
+}
