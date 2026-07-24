@@ -15,7 +15,7 @@ outliers).
 
 ## 1. Install
 
-Needs **Python 3.9+** (tested on 3.13). From a terminal:
+Needs **Python 3.10+** (tested on 3.13). From a terminal:
 
 ```bash
 cd /path/to/data-validator          # must be the project root
