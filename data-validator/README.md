@@ -15,16 +15,18 @@ outliers).
 
 ## 1. Install
 
+Needs **Python 3.9+** (tested on 3.13). From a terminal:
+
 ```bash
+cd /path/to/data-validator          # must be the project root
 python3 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+source .venv/bin/activate           # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-> If `pip` refuses with an "externally-managed-environment" error
-> (common on newer Debian/Ubuntu systems), either use the venv above
-> (recommended) or add `--break-system-packages` to the install
-> command.
+Keep the venv activated for every command below (`(.venv)` should appear in
+your prompt). If `pip` refuses with an "externally-managed-environment"
+error, you skipped the venv — create/activate it and retry.
 
 ## 2. Run it
 
